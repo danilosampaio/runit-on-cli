@@ -1,6 +1,6 @@
 {
     "name": "runit-on-cli",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Test node modules directly on CLI",
     "main": "index.js",
     "scripts": {
@@ -16,6 +16,7 @@
     "dependencies": {
         "commander": "^6.2.1",
         "configstore": "^5.0.1",
+        "ora": "^5.4.1",
         "shelljs": "^0.8.4"
     },
     "bin": "index.js",
