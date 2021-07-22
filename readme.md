@@ -1,6 +1,8 @@
 # runit-on-cli
 > Test node modules directly on CLI
 
+[![CircleCI](https://circleci.com/gh/danilosampaio/runit-on-cli.svg?style=svg)](https://circleci.com/gh/danilosampaio/runit-on-cli)
+
 ## install
 
 ```
