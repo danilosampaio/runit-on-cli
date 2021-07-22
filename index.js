@@ -29,6 +29,11 @@ const steps = {
     run: `Running ${formatModuleNameAndVersion(moduleName, program.opts())}`
 };
 
+if (!moduleName) {
+    console.error('the module name is required. \n$ runit-on-cli <module-name>');
+    return;
+}
+
 const spinner = ora(steps.registry).start();
 
 if (!moduleIsValid(moduleName)) {
