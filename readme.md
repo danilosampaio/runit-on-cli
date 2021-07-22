@@ -3,7 +3,7 @@
 
 [![CircleCI](https://circleci.com/gh/danilosampaio/runit-on-cli.svg?style=svg)](https://circleci.com/gh/danilosampaio/runit-on-cli)
 
-## install
+## Install
 
 ```
 npm install -g runit-on-cli
@@ -19,6 +19,27 @@ Supercalifragilisticexpialidocious
 ```
 
 __Named Export__
+
+```
+$ runit-on-cli axios get -p \'http://universities.hipolabs.com\'
+
+=== Result ===
+{
+    ...
+    data: {
+        author: { name: 'hipo', website: 'http://hipolabs.com' },
+        github: 'https://github.com/Hipo/university-domains-list',
+        example: 'http://universities.hipolabs.com/search?name=middle&country=Turkey'
+    }
+}
+```
+
+```
+$ runit-on-cli lodash orderBy -p '[{name:"banana"},{name:"apple"}]' '["name"]'
+
+=== Result ===
+[ { name: 'apple' }, { name: 'banana' } ]
+```
 
 ```
 $ runit-on-cli uuid v4
