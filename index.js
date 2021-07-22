@@ -13,7 +13,7 @@ const {
     runModule
 } = require('./lib/modules');
 
-program.version('1.0.0');
+program.version('1.0.3');
 
 program
     .option('-n, --npm-module-version [version]', 'npm module version')
@@ -26,7 +26,8 @@ const namedExport = program.args[1];
 const steps = {
     registry: 'Checking module on npm registry',
     install: 'Intalling dependencies',
-    run: `Running ${formatModuleNameAndVersion(moduleName, program.opts())}`
+    run: `Running ${formatModuleNameAndVersion(moduleName, program.opts())}`,
+    fail: `Fail running ${formatModuleNameAndVersion(moduleName, program.opts())}`
 };
 
 if (!moduleName) {
@@ -37,8 +38,7 @@ if (!moduleName) {
 const spinner = ora(steps.registry).start();
 
 if (!moduleIsValid(moduleName)) {
-    console.error(`NPM module ${moduleName} is invalid.`);
-    spinner.fail(steps.registry);
+    spinner.fail(`NPM module ${moduleName} is invalid.`);
     return;
 }
 
@@ -57,5 +57,7 @@ createModuleConfig(moduleName, program.opts().npmModuleVersion);
     const success = runModule(moduleName);
     if (success) {
         spinner.succeed(steps.run);
+    } else {
+        spinner.fail(steps.fail);
     }
 })();
