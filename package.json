@@ -1,0 +1,26 @@
+{
+    "name": "runit-on-cli",
+    "version": "1.0.0",
+    "description": "Test node modules directly on CLI",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "keywords": [
+        "CLI"
+    ],
+    "author": {
+        "name": "Danilo Sampaio",
+        "email": "jose.sampaio@venturus.org.br"
+    },
+    "dependencies": {
+        "commander": "^6.2.1",
+        "configstore": "^5.0.1",
+        "shelljs": "^0.8.4"
+    },
+    "bin": "index.js",
+    "license": "MIT",
+    "devDependencies": {
+        "jest": "^27.0.6"
+    }
+}
