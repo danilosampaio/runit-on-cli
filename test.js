@@ -50,12 +50,12 @@ test('installDeps', async () => {
 });
 
 test('createIndex', async () => {
-    await createIndex('greedy-wrap', null, ['\'abc\'']);
+    await createIndex('greedy-wrap', null, null, ['\'abc\'']);
     const indexContent = await readFile(path.join(getModuleDir('greedy-wrap'), 'index.js'), { encoding: 'utf-8'})
     expect(indexContent.indexOf('greedy_wrap(\'abc\')')).not.toBe(-1);
 });
 
 test('runModule', async () => {
-    const success = runModule('greedy-wrap');
-    expect(success).toBe(true);
+    const success = await runModule('greedy-wrap', true);
+    expect(success).toBe('abc');
 });
