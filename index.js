@@ -83,6 +83,7 @@ if(!program.opts().silent) {
     } catch (error) {
         if(!program.opts().silent) {
             spinner.fail(steps.fail);
+            console.log(error);
         }
     }
 })();

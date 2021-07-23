@@ -1,6 +1,6 @@
 {
     "name": "runit-on-cli",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Test node modules directly on CLI",
     "main": "index.js",
     "scripts": {
