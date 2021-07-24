@@ -13,7 +13,7 @@ const {
     runModule
 } = require('./lib/modules');
 
-program.version('1.0.6');
+program.version('1.0.7');
 
 program
     .option('-c, --call-module-as-function', 'call the exported module as a function intead of object')
