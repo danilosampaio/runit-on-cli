@@ -13,14 +13,15 @@ const {
     runModule
 } = require('./lib/modules');
 
-program.version('1.0.3');
+program.version('1.0.6');
 
 program
-    .option('-n, --npm-module-version [version]', 'npm module version')
-    .option('-s, --silent', 'print only the module output, withou progress or logs')
-    .option('-e, --call-module-as-function', 'call the exported module as a function intead of object')
+    .option('-c, --call-module-as-function', 'call the exported module as a function intead of object')
     .option('-f, --function-name [functionName]', 'call a specific function from exported module')
-    .option('-p, --params [parameters...]', 'function params')
+    .option('-n, --npm-module-version [version]', 'run a specific version of the npm module')
+    .option('-p, --params [parameters...]', 'list of params that will be passed to the module/function call')
+    .option('-s, --silent', 'print only the module output, without progress or logs')
+    .option('-u, --sub-module [subModule]', 'import a submodule, such as "crypto-js/sha256"')
 
 program.parse(process.argv);
 
@@ -67,7 +68,7 @@ if(!program.opts().silent) {
     if(!program.opts().silent) {
         spinner.succeed(steps.install);
     }
-    await createIndex(moduleName, namedExport, program.opts().functionName, program.opts().params, program.opts().callModuleAsFunction);
+    await createIndex(moduleName, namedExport, program.opts().functionName, program.opts().params, program.opts().callModuleAsFunction, program.opts().subModule);
     if(!program.opts().silent) {
         spinner.start(steps.run);
     }
@@ -76,13 +77,17 @@ if(!program.opts().silent) {
         const result = await runModule(moduleName, program.opts().silent);
         if(!program.opts().silent) {
             spinner.succeed(steps.run);
-            console.log('\n\n===== Result =====');
+            console.log('\n===== Result =====');
             console.log(result);
             console.log('==================\n');
+        } else {
+            console.log(result);
         }
     } catch (error) {
         if(!program.opts().silent) {
             spinner.fail(steps.fail);
+            console.log(error);
+        } else {
             console.log(error);
         }
     }

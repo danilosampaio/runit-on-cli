@@ -1,6 +1,6 @@
 {
     "name": "runit-on-cli",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Test node modules directly on CLI",
     "main": "index.js",
     "scripts": {
@@ -12,6 +12,10 @@
     "author": {
         "name": "Danilo Sampaio",
         "email": "jose.sampaio@venturus.org.br"
+    },
+    "repository": {
+        "url": "https://github.com/danilosampaio/runit-on-cli",
+        "type": "git"
     },
     "dependencies": {
         "commander": "^6.2.1",
