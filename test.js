@@ -27,8 +27,8 @@ test('createModuleConfig', () => {
 });
 
 test('formatModuleNameAndVersion', () => {
-    expect(formatModuleNameAndVersion('greedy-wrap', {})).toBe('greedy-wrap');
-    expect(formatModuleNameAndVersion('greedy-wrap', { npmModuleVersion: '1.0.0' })).toBe('greedy-wrap (1.0.0)');
+    expect(formatModuleNameAndVersion('greedy-wrap')).toBe('greedy-wrap');
+    expect(formatModuleNameAndVersion('greedy-wrap', '1.0.0')).toBe('greedy-wrap (1.0.0)');
 });
 
 test('createModuleDir', async () => {

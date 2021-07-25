@@ -21,17 +21,28 @@ program
     .option('-n, --npm-module-version [version]', 'run a specific version of the npm module')
     .option('-p, --params [parameters...]', 'list of params that will be passed to the module/function call')
     .option('-s, --silent', 'print only the module output, without progress or logs')
+    .option('-t, --transform-output [transformFunction]', 'define a function to modify module/function return')
     .option('-u, --sub-module [subModule]', 'import a submodule, such as "crypto-js/sha256"')
 
 program.parse(process.argv);
 
 const moduleName = program.args[0];
 const namedExport = program.args[1];
+const {
+    silent,
+    npmModuleVersion,
+    functionName,
+    params,
+    callModuleAsFunction,
+    subModule,
+    transformOutput
+} = program.opts();
+
 const steps = {
     registry: 'Checking module on npm registry',
     install: 'Intalling dependencies',
-    run: `Running ${formatModuleNameAndVersion(moduleName, program.opts())}`,
-    fail: `Fail running ${formatModuleNameAndVersion(moduleName, program.opts())}`
+    run: `Running ${formatModuleNameAndVersion(moduleName, npmModuleVersion)}`,
+    fail: `Fail running ${formatModuleNameAndVersion(moduleName, npmModuleVersion)}`
 };
 
 if (!moduleName) {
@@ -41,41 +52,50 @@ if (!moduleName) {
 
 let spinner;
 
-if(!program.opts().silent) {
+if(!silent) {
     spinner = ora(steps.registry).start();
 }
 
 if (!moduleIsValid(moduleName)) {
-    if(!program.opts().silent) {
+    if(!silent) {
         spinner.fail(`NPM module ${moduleName} is invalid.`);
     }
     return;
 }
 
-if(!program.opts().silent) {
+if(!silent) {
     spinner.succeed(steps.registry);
 }
 
 (async () => {
-    createModuleConfig(moduleName, program.opts().npmModuleVersion);
+    createModuleConfig(moduleName, npmModuleVersion);
 
     await createModuleDir(moduleName);
     initModule(moduleName);
-    if(!program.opts().silent) {
+    if(!silent) {
         spinner.start(steps.install);
     }
     installDeps(moduleName);
-    if(!program.opts().silent) {
+    if(!silent) {
         spinner.succeed(steps.install);
     }
-    await createIndex(moduleName, namedExport, program.opts().functionName, program.opts().params, program.opts().callModuleAsFunction, program.opts().subModule);
-    if(!program.opts().silent) {
+    await createIndex(
+        moduleName,
+        namedExport,
+        functionName,
+        params,
+        callModuleAsFunction,
+        subModule,
+        transformOutput
+    );
+
+    if(!silent) {
         spinner.start(steps.run);
     }
     
     try {
-        const result = await runModule(moduleName, program.opts().silent);
-        if(!program.opts().silent) {
+        const result = await runModule(moduleName);
+        if(!silent) {
             spinner.succeed(steps.run);
             console.log('\n===== Result =====');
             console.log(result);
@@ -84,7 +104,7 @@ if(!program.opts().silent) {
             console.log(result);
         }
     } catch (error) {
-        if(!program.opts().silent) {
+        if(!silent) {
             spinner.fail(steps.fail);
             console.log(error);
         } else {

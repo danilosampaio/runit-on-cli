@@ -1,5 +1,5 @@
 # runit-on-cli
-> Test node modules directly on CLI
+> Run node modules directly on CLI
 
 [![CircleCI](https://circleci.com/gh/danilosampaio/runit-on-cli.svg?style=svg)](https://circleci.com/gh/danilosampaio/runit-on-cli)
 
@@ -12,7 +12,7 @@ npm install -g runit-on-cli
 ### API
 
 ```
-$ runit-on-cli <module-name> <named-export> [-c] [-f [functionName]] [-n [version]] [-p [parameters...]] [-s] [-u [subModule]]
+$ runit-on-cli <module-name> <named-export> [-c] [-f [functionName]] [-n [version]] [-p [parameters...]] [-s] [-t [transformFunction]] [-u [subModule]]
 ```
 
 - `-c, --call-module-as-function`: call the exported module as a function intead of object
@@ -20,6 +20,7 @@ $ runit-on-cli <module-name> <named-export> [-c] [-f [functionName]] [-n [versio
 - `-n, --npm-module-version [version]`: run a specific version of the npm module
 - `-p, --params [parameters...]`: list of params that will be passed to the module/function call
 - `-s, --silent`: print only the module output, without progress or logs
+- `-t, --transform-output [transformFunction]`: define a function to modify module/function return
 - `-u, --sub-module [subModule]`: import a submodule, such as 'crypto-js/sha256'
 
 ## Examples
@@ -73,14 +74,13 @@ $ runit-on-cli -s lodash map -p "$(cat ./users.json)" 'e => {e.full = e.first + 
 ]
 ```
 
-__Running async functions:__
+__Running async functions and transform the output to return a specific property:__
 
 ```sh
-$ runit-on-cli -s axios get -p \'http://universities.hipolabs.com\'
+$ runit-on-cli -s axios get -p \'http://universities.hipolabs.com\' -t 'output.data'
 ```
 ```js
 {
-    //...
     data: {
         author: { name: 'hipo', website: 'http://hipolabs.com' },
         github: 'https://github.com/Hipo/university-domains-list',
@@ -89,6 +89,27 @@ $ runit-on-cli -s axios get -p \'http://universities.hipolabs.com\'
 }
 ```
 
+__A more complex example of using -t option:__
+
+```sh
+$ runit-on-cli -s moment -t 'moment().add(7, "days").format("YYYY/MM/DD")'
+```
+```
+2021/08/01
+```
+*Using the `-t` option is possible to use the node environment, actually.*
+
+
+__Using the node environment by -t option:__
+
+```sh
+$ runit-on-cli -s axios get -p \'http://universities.hipolabs.com\' -t 'Object.keys(output.data)'
+```
+```js
+[ 'author', 'github', 'example' ]
+```
+
+
 __Call a specific function from exported module:__
 
 ```sh
@@ -96,6 +117,18 @@ $ runit-on-cli chalk -f blue -p \"Hello World\"
 ```
 
 ![Image](assets/example2.png)
+
+*The same result is got by using `-t` option: `runit-on-cli chalk -p \"Hello World\" -t 'chalk.blue(output)'`*
+
+
+__Another example of calling a specific function from exported module:__
+
+```sh
+$ runit-on-cli -s faker -f phone.phoneNumber
+```
+```
+550-681-2495
+```
 
 __Running a module with a named export, without parameters:__
 
