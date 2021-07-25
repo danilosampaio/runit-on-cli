@@ -40,7 +40,7 @@ const {
 
 const steps = {
     registry: 'Checking module on npm registry',
-    install: 'Intalling dependencies',
+    install: 'Installing dependencies',
     run: `Running ${formatModuleNameAndVersion(moduleName, npmModuleVersion)}`,
     fail: `Fail running ${formatModuleNameAndVersion(moduleName, npmModuleVersion)}`
 };
